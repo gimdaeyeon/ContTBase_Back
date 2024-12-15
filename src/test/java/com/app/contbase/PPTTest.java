@@ -1,6 +1,7 @@
 package com.app.contbase;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.common.usermodel.fonts.FontGroup;
 import org.apache.poi.sl.usermodel.PictureData;
 import org.apache.poi.sl.usermodel.TextParagraph;
 import org.apache.poi.xslf.usermodel.*;
@@ -103,45 +104,47 @@ public class PPTTest {
     @Test
     @DisplayName("이미지 배경과 자막을 가지는 ppt를 생성하는 테스트")
     void basicSubTitle() throws IOException {
-        XMLSlideShow ppt = new XMLSlideShow();
+        try (XMLSlideShow ppt = new XMLSlideShow()) {
 
-        Dimension pageSize = ppt.getPageSize();
-        double slideWidth = pageSize.getWidth();
-        double slideHeight = pageSize.getHeight();
+            Dimension pageSize = ppt.getPageSize();
+            double slideWidth = pageSize.getWidth();
+            double slideHeight = pageSize.getHeight();
 
-        String imagePath = "D:/personal_project/contTbase/resource/sampleImg/test4.jpg";
-        FileInputStream imageInputStream = new FileInputStream(imagePath);
+            String imagePath = "D:/personal_project/contTbase/resource/sampleImg/test4.jpg";
+            FileInputStream imageInputStream = new FileInputStream(imagePath);
 
-        XSLFPictureData pictureData = ppt.addPicture(imageInputStream, PictureData.PictureType.JPEG);
+            XSLFPictureData pictureData = ppt.addPicture(imageInputStream, PictureData.PictureType.JPEG);
 
-        XSLFSlide slide = ppt.createSlide();
+            XSLFSlide slide = ppt.createSlide();
 
-        XSLFPictureShape picture = slide.createPicture(pictureData);
+            XSLFPictureShape picture = slide.createPicture(pictureData);
 
-        XSLFTextBox textBox = slide.createTextBox();
+            XSLFTextBox textBox = slide.createTextBox();
 
-        double textBoxWidth = 600;
-        double textBoxHeight = 150;
+            double textBoxWidth = 600;
+            double textBoxHeight = 150;
 
-        textBox.setAnchor(new Rectangle2D.Double((slideWidth - textBoxWidth)/2, 50, textBoxWidth, textBoxHeight));
-        textBox.setHorizontalCentered(true);
+            textBox.setAnchor(new Rectangle2D.Double((slideWidth - textBoxWidth) / 2, 50, textBoxWidth, textBoxHeight));
+            textBox.setHorizontalCentered(true);
 
-        XSLFTextParagraph p = textBox.addNewTextParagraph();
-        p.setTextAlign(TextParagraph.TextAlign.CENTER);
+            XSLFTextParagraph p = textBox.addNewTextParagraph();
+            p.setTextAlign(TextParagraph.TextAlign.CENTER);
 
-        XSLFTextRun r1 = p.addNewTextRun();
-        r1.setFontSize(50.0);
-        r1.setFontColor(Color.white);
-        r1.setBold(true);
-        r1.setText("Hello PPT\nMy name is Java");
+            XSLFTextRun r1 = p.addNewTextRun();
+            r1.setFontSize(50.0);
+            r1.setFontColor(Color.WHITE);
+//        r1.setFontFamily("Baloo");
+            r1.setBold(true);
+            r1.setText("헬로 월드\nMy name is Java");
 
-        picture.setAnchor(new Rectangle2D.Double(0, 0, slideWidth, slideHeight));
+            picture.setAnchor(new Rectangle2D.Double(0, 0, slideWidth, slideHeight));
 
-        try (FileOutputStream out = new FileOutputStream("basicTest.pptx")) {
-            ppt.write(out);
-            log.info("프레젠테이션이 생성되었습니다.");
-        } catch (IOException e) {
-            e.printStackTrace();
+            try (FileOutputStream out = new FileOutputStream("basicTest.pptx")) {
+                ppt.write(out);
+                log.info("프레젠테이션이 생성되었습니다.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
