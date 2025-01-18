@@ -5,6 +5,7 @@ import org.apache.poi.common.usermodel.fonts.FontGroup;
 import org.apache.poi.sl.usermodel.PictureData;
 import org.apache.poi.sl.usermodel.TextParagraph;
 import org.apache.poi.xslf.usermodel.*;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 public class PPTTest {
@@ -148,4 +152,43 @@ public class PPTTest {
         }
     }
 
+
+    @Test
+    @DisplayName("긴 문자열을 엔터를 기준으로 배열로 분리하기")
+    void splitSubtitlesTest(){
+        String subtitles = """
+                이것은 ppt를 만들기 위한
+                프로젝트 입니다
+                
+                문자열들 사이에
+                한 칸을 띄우게 되면
+                
+                새로운 슬라이드를 생성해서
+                ppt를 생성하게 됩니다.
+                
+                따라서 이 테스트를 기반으로
+                생성된 ppt의 총 페이지 갯수는
+                
+                5개가 되어야 합니다.
+                """;
+
+//        클라이언트의 os에 따라 개행문자가 달라질 수 있기 때문에 System.lineSeparator()가 아닌 정규표현식을 사용해서 문자열을 분리
+//        String[] split = subtitles.split(System.lineSeparator());
+//
+        String[] split = subtitles.split("\\R{2,}");
+        log.info("length: {}",split.length);
+        log.info("split = {}", Arrays.toString(split));
+
+        assertThat(split.length).isEqualTo(5);
+    }
+
 }
+
+
+
+
+
+
+
+
+
