@@ -1,5 +1,6 @@
 package com.app.contbase;
 
+import com.app.contbase.service.ppt.PPTServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.common.usermodel.fonts.FontGroup;
 import org.apache.poi.sl.usermodel.PictureData;
@@ -8,6 +9,7 @@ import org.apache.poi.xslf.usermodel.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -50,7 +52,7 @@ public class PPTTest {
         r1.setText("Hello PPT\nMy name is Java");
 
 
-//        프세젠테이션 저장
+//        프레젠테이션 저장
         try (FileOutputStream out = new FileOutputStream("textTest.pptx")) {
             ppt.write(out);
             log.info("프레젠테이션이 생성되었습니다.");
