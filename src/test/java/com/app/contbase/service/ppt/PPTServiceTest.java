@@ -5,9 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import java.io.File;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SpringBootTest
@@ -21,16 +22,21 @@ class PPTServiceTest {
     void createSubtitlePPT(){
         // given
         String subtitles = """
-                해당 테스트를 통과하게 되면
-                먼저는 PPT가 생성이 되어야 하고
+                안녕하세요
                 
-                ppt의 슬라이드는
-                2개여야 합니다.
+                저의 이름은
+                
+                ppt입니다
+                
                 """;
         // when
-        pptService.createPPT("test",subtitles);
+
+        String filePath = pptService.createPPT("test", subtitles);
+        File pptFile = new File(filePath);
+
         // then
-//        경로에 ppt파일이 존재하는지 확인
+        assertThat(pptFile.exists()).isTrue();
     }
+
 
 }

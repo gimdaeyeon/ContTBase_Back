@@ -17,9 +17,13 @@ import java.io.IOException;
 public class PPTServiceImpl implements PPTService {
 
     private static final String DOUBLE_LINE_BREAK_PATTERN = "\\R{2,}";
+    private static final String PPT_EXTENSION = ".pptx";
+
 
     @Override
-    public void createPPT(String fileName, String subtitle) {
+    public String createPPT(String fileName, String subtitle) {
+        String filePath = fileName + PPT_EXTENSION;
+
 
         String[] subtitles = subtitle.split(DOUBLE_LINE_BREAK_PATTERN);
 
@@ -42,23 +46,23 @@ public class PPTServiceImpl implements PPTService {
                 p.setTextAlign(TextParagraph.TextAlign.CENTER);
 
                 XSLFTextRun textRun = p.addNewTextRun();
-                textRun.setFontSize(50.0);
+                textRun.setFontSize(45.0);
                 textRun.setBold(true);
 
                 textRun.setText(slideText);
 
-                try (FileOutputStream out = new FileOutputStream(fileName + ".pptx")) {
+                try (FileOutputStream out = new FileOutputStream(filePath)) {
                     ppt.write(out);
                     log.info("프레젠테이션 생성");
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
-
         } catch (IOException e) {
             log.error("createPPT:", e);
+            return null;
         }
+
+        return filePath;
     }
 }
