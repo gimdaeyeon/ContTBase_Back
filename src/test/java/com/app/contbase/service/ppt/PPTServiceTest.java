@@ -28,7 +28,7 @@ class PPTServiceTest {
                 2개여야 합니다.
                 """;
         // when
-
+        pptService.createPPT("test",subtitles);
         // then
 //        경로에 ppt파일이 존재하는지 확인
     }

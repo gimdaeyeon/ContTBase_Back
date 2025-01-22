@@ -2,5 +2,5 @@ package com.app.contbase.service.ppt;
 
 public interface PPTService {
 
-    String createPPT(String subtitles);
+    void createPPT(String fileName, String subtitles);
 }
